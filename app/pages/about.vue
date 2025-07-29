@@ -4,7 +4,7 @@
     <p class="text-lg text-gray-600 mb-8">
       We're a team of crypto enthusiasts building tools to help content creators
       and marketers earn passive income through crypto referrals. Join us and
-      shape the future of Web3 adoption.33
+      shape the future of Web3 adoption.
     </p>
   </section>
 </template>
