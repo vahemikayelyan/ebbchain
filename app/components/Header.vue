@@ -77,14 +77,6 @@
           About
         </NuxtLink>
         <NuxtLink
-          to="/compare-bots"
-          class="nav-link"
-          exact-active-class="active-link"
-          @click="showMenu = false"
-        >
-          Compare Bots
-        </NuxtLink>
-        <NuxtLink
           to="/partners"
           class="nav-link"
           exact-active-class="active-link"
