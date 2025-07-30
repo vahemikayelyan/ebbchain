@@ -56,13 +56,7 @@
 
       <!-- OAuth Buttons -->
       <div class="space-y-3">
-        <button
-          @click="signInWithGoogle"
-          class="w-full flex items-center justify-center border border-gray-300 text-gray-800 bg-white py-2 rounded-md hover:bg-gray-50 transition"
-        >
-          <img src="/google.svg" alt="Google" class="w-5 h-5 mr-2" />
-          Continue with Google
-        </button>
+        <GoogleLoginButton />
         <button
           @click="signInWithGitHub"
           class="w-full flex items-center justify-center border border-gray-300 text-gray-800 bg-white py-2 rounded-md hover:bg-gray-50 transition"
@@ -91,15 +85,15 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: "guest",
+});
+
 const email = ref("");
 const password = ref("");
 
 const handleSignIn = () => {
   // handle sign in logic (email/password)
-};
-
-const signInWithGoogle = () => {
-  // handle Google OAuth sign in
 };
 
 const signInWithGitHub = () => {

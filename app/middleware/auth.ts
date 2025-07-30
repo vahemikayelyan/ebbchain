@@ -1,9 +1,8 @@
 // middleware/auth.ts
-export default defineNuxtRouteMiddleware((to, from) => {
-  const { data } = useAuth();
-  const user = computed(() => data.value?.user);
+export default defineNuxtRouteMiddleware((to) => {
+  const { status } = useAuth();
 
-  if (!user.value && to.path !== "/login") {
-    return navigateTo("/login");
+  if (status.value !== "authenticated") {
+    return navigateTo(`/signin?redirect=${encodeURIComponent(to.fullPath)}`);
   }
 });

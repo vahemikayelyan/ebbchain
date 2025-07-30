@@ -12,83 +12,115 @@
         <span>EbbChain</span>
       </NuxtLink>
 
-      <!-- Hamburger button -->
+      <!-- Hamburger (mobile) -->
       <button
         @click="showMenu = !showMenu"
         type="button"
         class="sm:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
         aria-label="Toggle menu"
       >
-        <svg
-          v-if="!showMenu"
+        <component
+          :is="showMenu ? CloseIcon : MenuIcon"
           class="h-6 w-6 text-gray-700"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-        <svg
-          v-else
-          class="h-6 w-6 text-gray-700"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        />
       </button>
 
-      <!-- Navbar Links -->
+      <!-- Main Navigation -->
       <div
         :class="[
-          'sm:flex sm:flex-row sm:items-center sm:space-x-3 flex-wrap',
+          'sm:flex sm:items-center sm:space-x-4',
           showMenu
-            ? 'flex flex-col absolute top-full left-0 w-full bg-white shadow-md rounded-b-md px-4 py-4 sm:static sm:w-auto sm:shadow-none sm:rounded-none sm:px-0 sm:py-0'
-            : 'hidden',
+            ? 'flex flex-col absolute top-full left-0 w-full bg-white shadow-md rounded-b-md px-4 py-4 sm:static sm:flex-row sm:w-auto sm:shadow-none sm:rounded-none sm:px-0 sm:py-0'
+            : 'hidden sm:flex',
         ]"
       >
+        <!-- Static Links -->
         <NuxtLink
           to="/"
           class="nav-link"
           exact-active-class="active-link"
-          @click="showMenu = false"
+          @click="closeMenu"
+          >Home</NuxtLink
         >
-          Home
-        </NuxtLink>
         <NuxtLink
           to="/about"
           class="nav-link"
           exact-active-class="active-link"
-          @click="showMenu = false"
+          @click="closeMenu"
+          >About</NuxtLink
         >
-          About
-        </NuxtLink>
         <NuxtLink
           to="/partners"
           class="nav-link"
           exact-active-class="active-link"
-          @click="showMenu = false"
+          @click="closeMenu"
+          >Partners</NuxtLink
         >
-          Partners
-        </NuxtLink>
+
+        <!-- Services Dropdown -->
+        <div
+          class="relative flex items-center"
+          v-click-outside="handleClickOutside"
+        >
+          <button
+            class="flex items-center nav-link cursor-pointer select-none"
+            @click="dropdownOpen = !dropdownOpen"
+          >
+            <span>Services</span>
+            <svg
+              class="mt-[0.2rem] ml-1 w-4 h-4 text-gray-500 transition-transform duration-200"
+              :class="{ 'rotate-180': dropdownOpen }"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          <div
+            v-if="dropdownOpen"
+            class="absolute sm:absolute left-0 top-full mt-1 w-52 bg-white border border-gray-200 shadow-md rounded-md z-50 flex flex-col"
+          >
+            <NuxtLink
+              to="/services/wallet-transfer"
+              class="dropdown-link"
+              @click="handleServiceClick"
+              >Wallet Transfer</NuxtLink
+            >
+            <NuxtLink
+              to="/services/token-swap"
+              class="dropdown-link"
+              @click="handleServiceClick"
+              >Token Swap</NuxtLink
+            >
+            <NuxtLink
+              to="/services/cex-transfer"
+              class="dropdown-link"
+              @click="handleServiceClick"
+              >CEX Transfer</NuxtLink
+            >
+            <NuxtLink
+              to="/services/swap-transfer"
+              class="dropdown-link"
+              @click="handleServiceClick"
+              >Swap & Transfer</NuxtLink
+            >
+          </div>
+        </div>
+
+        <!-- Auth Actions -->
         <NuxtLink
+          v-if="!loggedIn"
           to="/signin"
           class="nav-link"
-          exact-active-class="active-link"
-          @click="showMenu = false"
+          @click="closeMenu"
         >
           <button
             type="button"
@@ -97,22 +129,54 @@
             Sign in
           </button>
         </NuxtLink>
+        <button
+          v-else
+          @click="handleLogout"
+          class="text-red-600 hover:text-red-700 font-medium px-3 py-1 transition"
+        >
+          Sign out
+        </button>
       </div>
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import CloseIcon from "./CloseIcon.vue";
+import MenuIcon from "./MenuIcon.vue";
+
+const { status, signOut } = useAuth();
+const loggedIn = computed(() => status.value === "authenticated");
 const showMenu = ref(false);
+const dropdownOpen = ref(false);
+
+const closeMenu = () => {
+  showMenu.value = false;
+  dropdownOpen.value = false;
+};
+
+const handleServiceClick = () => {
+  dropdownOpen.value = false;
+  showMenu.value = false;
+};
+
+const handleClickOutside = () => {
+  dropdownOpen.value = false;
+};
+
+const handleLogout = async () => {
+  await signOut({ callbackUrl: "/signin" });
+};
 </script>
 
 <style scoped>
 .nav-link {
-  @apply text-gray-600 hover:text-indigo-600 font-medium transition px-1 py-1 rounded-lg whitespace-nowrap;
+  @apply text-gray-600 hover:text-indigo-600 font-medium transition px-2 py-1 rounded-lg whitespace-nowrap;
 }
-
 .active-link {
   @apply text-indigo-600 underline underline-offset-4;
+}
+.dropdown-link {
+  @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition whitespace-nowrap;
 }
 </style>
