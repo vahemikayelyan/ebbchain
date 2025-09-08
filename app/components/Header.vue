@@ -90,11 +90,9 @@ import MenuIcon from "./MenuIcon.vue";
 const { status, signOut } = useAuth();
 const loggedIn = computed(() => status.value === "authenticated");
 const showMenu = ref(false);
-const dropdownOpen = ref(false);
 
 const closeMenu = () => {
   showMenu.value = false;
-  dropdownOpen.value = false;
 };
 
 const handleLogout = async () => {
@@ -108,8 +106,5 @@ const handleLogout = async () => {
 }
 .active-link {
   @apply text-indigo-600 underline underline-offset-4;
-}
-.dropdown-link {
-  @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition whitespace-nowrap;
 }
 </style>
