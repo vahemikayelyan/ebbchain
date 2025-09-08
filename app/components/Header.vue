@@ -36,18 +36,11 @@
       >
         <!-- Static Links -->
         <NuxtLink
-          to="/"
+          to="/categories"
           class="nav-link"
           exact-active-class="active-link"
           @click="closeMenu"
-          >Home</NuxtLink
-        >
-        <NuxtLink
-          to="/about"
-          class="nav-link"
-          exact-active-class="active-link"
-          @click="closeMenu"
-          >About</NuxtLink
+          >Categories</NuxtLink
         >
         <NuxtLink
           to="/partners"
@@ -56,64 +49,13 @@
           @click="closeMenu"
           >Partners</NuxtLink
         >
-
-        <!-- Services Dropdown -->
-        <div
-          class="relative flex items-center"
-          v-click-outside="handleClickOutside"
+        <NuxtLink
+          to="/about"
+          class="nav-link"
+          exact-active-class="active-link"
+          @click="closeMenu"
+          >About</NuxtLink
         >
-          <button
-            class="flex items-center nav-link cursor-pointer select-none"
-            @click="dropdownOpen = !dropdownOpen"
-          >
-            <span>Services</span>
-            <svg
-              class="mt-[0.2rem] ml-1 w-4 h-4 text-gray-500 transition-transform duration-200"
-              :class="{ 'rotate-180': dropdownOpen }"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-
-          <div
-            v-if="dropdownOpen"
-            class="absolute sm:absolute left-0 top-full mt-1 w-52 bg-white border border-gray-200 shadow-md rounded-md z-50 flex flex-col"
-          >
-            <NuxtLink
-              to="/services/wallet-transfer"
-              class="dropdown-link"
-              @click="handleServiceClick"
-              >Wallet Transfer</NuxtLink
-            >
-            <NuxtLink
-              to="/services/token-swap"
-              class="dropdown-link"
-              @click="handleServiceClick"
-              >Token Swap</NuxtLink
-            >
-            <NuxtLink
-              to="/services/cex-transfer"
-              class="dropdown-link"
-              @click="handleServiceClick"
-              >CEX Transfer</NuxtLink
-            >
-            <NuxtLink
-              to="/services/swap-transfer"
-              class="dropdown-link"
-              @click="handleServiceClick"
-              >Swap & Transfer</NuxtLink
-            >
-          </div>
-        </div>
 
         <!-- Auth Actions -->
         <NuxtLink
