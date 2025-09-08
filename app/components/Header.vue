@@ -97,15 +97,6 @@ const closeMenu = () => {
   dropdownOpen.value = false;
 };
 
-const handleServiceClick = () => {
-  dropdownOpen.value = false;
-  showMenu.value = false;
-};
-
-const handleClickOutside = () => {
-  dropdownOpen.value = false;
-};
-
 const handleLogout = async () => {
   await signOut({ callbackUrl: "/signin" });
 };
