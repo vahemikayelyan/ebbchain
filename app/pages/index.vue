@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import HowItWorks from "~/components/HowItWorks.vue";
+</script>
+
 <template>
-  <div class="bg-white text-gray-900"></div>
+  <div>
+    <HeroSection />
+    <CategoriesGrid />
+    <TopStores />
+    <HowItWorks />
+  </div>
 </template>
