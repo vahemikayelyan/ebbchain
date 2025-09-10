@@ -1,13 +1,6 @@
 import type { Config } from "tailwindcss";
 
 export default <Partial<Config>>{
-  content: [
-    "./components/**/*.{vue,js,ts}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
-    "./plugins/**/*.{js,ts}",
-    "./app.vue",
-  ],
   theme: {
     extend: {
       colors: {
@@ -25,7 +18,7 @@ export default <Partial<Config>>{
         },
       },
       boxShadow: {
-        soft: "0 10px 25px -10px rgba(0,0,0,0.12)",
+        soft: "0 10px 20px -10px rgba(0,0,0,0.12)",
       },
     },
   },

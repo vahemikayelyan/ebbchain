@@ -26,7 +26,6 @@ export function useInView<T extends Element>(
   });
 
   onBeforeUnmount(stop);
-  //useEventListener(window, "beforeunload", stop);
 
   return { el, isInView };
 }

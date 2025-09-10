@@ -2,14 +2,16 @@
   <section ref="el" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
     <div class="text-center">
       <h2 class="text-3xl md:text-4xl font-bold tracking-tight">
-        Top‑rated stores
+        Most popular stores
       </h2>
       <p class="mt-3 text-gray-600">
         Member favorites with generous rewards and fast payouts.
       </p>
     </div>
 
-    <NuxtLink to="/partners" class="btn-outline">View all partners</NuxtLink>
+    <div class="text-center md:text-right mt-4">
+      <NuxtLink to="/partners" class="btn-outline">View all stores</NuxtLink>
+    </div>
 
     <div
       :class="[
