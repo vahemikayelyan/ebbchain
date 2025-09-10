@@ -84,8 +84,8 @@
 </template>
 
 <script setup lang="ts">
+import MenuIcon from "./BrandIcon.vue";
 import CloseIcon from "./CloseIcon.vue";
-import MenuIcon from "./MenuIcon.vue";
 
 const { status, signOut } = useAuth();
 const loggedIn = computed(() => status.value === "authenticated");

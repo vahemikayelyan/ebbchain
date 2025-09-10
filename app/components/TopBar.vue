@@ -5,18 +5,7 @@
     >
       <!-- Logo / Brand -->
       <NuxtLink to="/" class="flex items-center gap-2 group">
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 2l2.8 6h6.2l-5 3.9 1.9 6.1L12 15l-5.9 3 1.9-6.1-5-3.9h6.2L12 2z"
-            fill="#fb6d14"
-          />
-        </svg>
+        <BrandIcon />
         <span class="text-xl font-bold tracking-tight">CarroCash</span>
       </NuxtLink>
 
