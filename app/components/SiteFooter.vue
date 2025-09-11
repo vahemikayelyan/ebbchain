@@ -27,7 +27,7 @@
         <h4 class="font-semibold">Explore</h4>
         <ul class="mt-3 space-y-2 text-sm">
           <li><NuxtLink to="/categories">Categories</NuxtLink></li>
-          <li><NuxtLink to="/partners">Partners</NuxtLink></li>
+          <li><NuxtLink to="/stores">Stores</NuxtLink></li>
           <li><NuxtLink to="/how-it-works">How It Works</NuxtLink></li>
         </ul>
       </div>

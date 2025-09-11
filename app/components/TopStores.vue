@@ -10,7 +10,7 @@
     </div>
 
     <div class="text-center md:text-right mt-4">
-      <NuxtLink to="/partners" class="btn-outline">View all stores</NuxtLink>
+      <NuxtLink to="/stores" class="btn-outline">View all stores</NuxtLink>
     </div>
 
     <div

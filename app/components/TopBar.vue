@@ -16,7 +16,7 @@
           <input
             type="text"
             placeholder="Search stores, categories, coupons…"
-            class="!rounded-r-none input-soft w-full"
+            class="!rounded-r-none !border-r-0 input-soft w-full"
             fdprocessedid="3h0vs9"
           />
 
@@ -47,15 +47,27 @@
 
       <!-- Auth -->
       <div class="ml-auto flex items-center gap-3">
-        <NuxtLink
-          to="/login"
-          class="text-gray-700 hover:text-gray-900 hover:underline hover:underline-offset-4 transition-colors duration-200"
-        >
-          Log in
-        </NuxtLink>
-
-        <NuxtLink to="/join" class="btn-primary">Join now</NuxtLink>
+        <template v-if="!loggedIn">
+          <NuxtLink to="/login" class="auth-link"> Log in </NuxtLink>
+          <NuxtLink to="/join" class="btn-primary">Join now</NuxtLink>
+        </template>
+        <button v-else @click="handleLogout" class="auth-link">Sign out</button>
       </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const { status, signOut } = useAuth();
+const loggedIn = computed(() => status.value === "authenticated");
+
+const handleLogout = async () => {
+  await signOut({ callbackUrl: "/login" });
+};
+</script>
+
+<style scoped>
+.auth-link {
+  @apply text-gray-600 hover:text-gray-800 font-medium hover:underline hover:underline-offset-4 transition;
+}
+</style>

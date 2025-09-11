@@ -12,6 +12,7 @@
 
         <!-- Email/Password Form -->
         <form @submit.prevent="handleSignIn" class="space-y-4">
+          <!-- Email -->
           <div>
             <label class="block text-md text-gray-700 mb-1" for="email"
               >Email</label
@@ -20,26 +21,120 @@
               id="email"
               type="email"
               v-model="email"
-              required
               class="w-full input-soft"
               placeholder="you@example.com"
               autocomplete="email"
+              required
             />
+            <p v-if="errors.email" class="text-xs text-red-600 mt-1">
+              {{ errors.email }}
+            </p>
           </div>
+
+          <!-- Password -->
           <div>
             <label class="block text-md text-gray-700 mb-1" for="password"
               >Password</label
             >
-            <input
-              id="password"
-              type="password"
-              v-model="password"
-              required
-              class="w-full input-soft"
-              placeholder="Your password"
-            />
+            <div class="relative">
+              <input
+                id="password"
+                :type="showPassword ? 'text' : 'password'"
+                v-model="password"
+                class="w-full input-soft pr-10"
+                placeholder="Your password"
+                required
+              />
+
+              <!-- Toggle Button -->
+              <button
+                type="button"
+                @click="showPassword = !showPassword"
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                tabindex="-1"
+              >
+                <svg
+                  v-if="showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+                <svg
+                  v-else
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.978 9.978 0 012.169-3.592m2.83-2.83A9.978 9.978 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.978 9.978 0 01-4.22 5.408M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 3l18 18"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <p v-if="errors.password" class="text-xs text-red-600 mt-1">
+              {{ errors.password }}
+            </p>
           </div>
-          <button type="submit" class="w-full btn-primary">Sign In</button>
+
+          <!-- API error -->
+          <p v-if="errors.api" class="text-xs text-red-600 mt-1">
+            {{ errors.api }}
+          </p>
+
+          <!-- Sign In Button -->
+          <button type="submit" class="w-full btn-primary">
+            <span v-if="isLoading" class="flex items-center">
+              <svg
+                class="animate-spin h-5 w-5 mr-2 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                />
+              </svg>
+              Signing In...
+            </span>
+            <span v-else>Sign In</span>
+          </button>
         </form>
 
         <!-- Divider -->
@@ -53,7 +148,6 @@
         <div class="space-y-3">
           <GoogleLoginButton />
           <button
-            @click="signInWithGitHub"
             class="w-full flex items-center justify-center border border-gray-300 text-gray-800 bg-white py-2 rounded-md hover:bg-gray-50 transition"
           >
             <svg
@@ -70,9 +164,9 @@
 
         <!-- Footer -->
         <p class="text-center text-sm text-gray-600 font-semibold">
-          New to EbbChain?
+          New to CarroCash?
           <NuxtLink to="/join" class="text-carrot-600 hover:underline"
-            >Create an account</NuxtLink
+            >Join now</NuxtLink
           >
         </p>
       </div>
@@ -81,18 +175,73 @@
 </template>
 
 <script setup>
+const { signIn } = useAuth();
+
 definePageMeta({
   middleware: "guest",
 });
 
 const email = ref("");
 const password = ref("");
+const isLoading = ref(false);
+const showPassword = ref(false);
 
-const handleSignIn = () => {
-  // handle sign in logic (email/password)
+const errors = reactive({
+  email: "",
+  password: "",
+  api: "",
+});
+
+const validateEmail = (val) => {
+  const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  return regex.test(val);
 };
 
-const signInWithGitHub = () => {
-  // handle GitHub OAuth sign in
+const validatePassword = (val) => {
+  return val.length >= 8 && /[A-Z]/.test(val) && /\d/.test(val);
+};
+
+const handleSignIn = async () => {
+  if (isLoading.value) return;
+
+  errors.email = "";
+  errors.password = "";
+  errors.api = "";
+
+  if (!validateEmail(email.value)) {
+    errors.email = "Please enter a valid email address.";
+  }
+
+  if (!validatePassword(password.value)) {
+    errors.password =
+      "Password must be at least 8 characters, include one uppercase letter and one number.";
+  }
+
+  if (errors.email || errors.password) {
+    return;
+  }
+
+  try {
+    isLoading.value = true;
+
+    // ⏳ Optional: demo delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // ✅ Use Nuxt Auth signIn helper
+    const result = await signIn("credentials", {
+      email: email.value,
+      password: password.value,
+      redirect: true,
+    });
+
+    if (result?.error) {
+      errors.api = "Invalid email or password.";
+      isLoading.value = false;
+      return;
+    }
+  } catch (err) {
+    errors.api = "Something went wrong. Please try again.";
+    isLoading.value = false;
+  }
 };
 </script>

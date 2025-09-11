@@ -22,19 +22,19 @@ const deals = [
     title: "Nike",
     logo: "/logos/nike.svg",
     offer: "5% cashback + 20% off sale",
-    link: "/partners/nike",
+    link: "/stores/nike",
   },
   {
     title: "Amazon",
     logo: "/logos/amazon.svg",
     offer: "Up to 10% cashback on gadgets",
-    link: "/partners/amazon",
+    link: "/stores/amazon",
   },
   {
     title: "Best Buy",
     logo: "/logos/bestbuy.svg",
     offer: "3% cashback + Tech Deals",
-    link: "/partners/bestbuy",
+    link: "/stores/bestbuy",
   },
 ];
 </script>

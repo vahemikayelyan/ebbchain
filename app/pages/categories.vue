@@ -9,14 +9,6 @@
           Browse our growing list of store categories.
         </p>
       </div>
-      <div class="hidden md:block w-full max-w-md">
-        <input
-          type="search"
-          class="input-soft w-full"
-          placeholder="Filter categories…"
-          v-model="q"
-        />
-      </div>
     </header>
 
     <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">

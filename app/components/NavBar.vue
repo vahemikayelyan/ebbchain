@@ -66,7 +66,7 @@ const open = ref(false);
 
 const menuItems = [
   { label: "Categories", to: "/categories" },
-  { label: "Partners", to: "/partners" },
+  { label: "Stores", to: "/stores" },
   { label: "How It Works", to: "/how-it-works" },
   { label: "Trending Deals", to: "/deals" },
   { label: "Blog", to: "/blog" },
