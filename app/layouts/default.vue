@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen flex flex-col text-gray-900">
-    <!-- Header/Navbar -->
+    <!-- Header -->
     <Header />
     <!-- Main Content -->
     <main class="flex-1"><slot /></main>
     <!-- Footer -->
-    <SiteFooter />
+    <Footer />
   </div>
 </template>

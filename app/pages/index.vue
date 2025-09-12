@@ -6,5 +6,4 @@
   <Testimonials />
   <HowItWorks />
   <FaqSection />
-  <NewsletterSignup />
 </template>

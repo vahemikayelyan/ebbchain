@@ -4,7 +4,7 @@
       <!-- Logo -->
       <div class="flex justify-center"><BrandIcon /></div>
 
-      <div class="space-y-6 mt-3">
+      <div class="space-y-5 mt-3">
         <!-- Heading -->
         <h1 class="text-center text-2xl font-semibold text-gray-900">
           Sign in to CarroCash
@@ -135,6 +135,15 @@
             </span>
             <span v-else>Sign In</span>
           </button>
+
+          <!-- Forgot Password -->
+          <div class="text-center">
+            <NuxtLink
+              class="text-sm font-semibold text-gray-600 hover:underline"
+            >
+              Forgot password?
+            </NuxtLink>
+          </div>
         </form>
 
         <!-- Divider -->
