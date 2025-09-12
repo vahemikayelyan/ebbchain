@@ -10,77 +10,66 @@
 
 <script setup lang="ts">
 const signInWithGoogle = async () => {
-  try {
-    const width = 500;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
+  const width = 500;
+  const height = 600;
+  const left = window.screenX + (window.outerWidth - width) / 2;
+  const top = window.screenY + (window.outerHeight - height) / 2;
 
-    // 🔁 1. Extract `redirect` from current URL (or fallback)
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectAfterLogin = urlParams.get("redirect") || "/dashboard";
+  // Where to send the user after login success
+  const redirectAfterLogin = "/dashboard";
+  const callbackUrl = "/auth/popup-close";
 
-    // The popup will close to this route (handled internally)
-    const callbackUrl = "/auth/popup-close";
+  // Get CSRF token from Nuxt Auth
+  const csrfRes = await fetch("/api/auth/csrf");
+  const { csrfToken } = await csrfRes.json();
 
-    // 2. Get CSRF token
-    const csrfRes = await fetch("/api/auth/csrf");
-    const { csrfToken } = await csrfRes.json();
+  // Build form
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = `/api/auth/signin/google?callbackUrl=${encodeURIComponent(
+    callbackUrl
+  )}`;
+  form.target = "GoogleLoginPopup";
 
-    // 3. Create form to sign in with Google
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = `/api/auth/signin/google?callbackUrl=${encodeURIComponent(
-      callbackUrl
-    )}`;
-    form.target = "GoogleLoginPopup";
+  // Hidden CSRF field
+  const csrfInput = document.createElement("input");
+  csrfInput.type = "hidden";
+  csrfInput.name = "csrfToken";
+  csrfInput.value = csrfToken;
+  form.appendChild(csrfInput);
 
-    // Add CSRF token
-    const csrfInput = document.createElement("input");
-    csrfInput.type = "hidden";
-    csrfInput.name = "csrfToken";
-    csrfInput.value = csrfToken;
-    form.appendChild(csrfInput);
+  // Hidden callback field
+  const cbInput = document.createElement("input");
+  cbInput.type = "hidden";
+  cbInput.name = "callbackUrl";
+  cbInput.value = callbackUrl;
+  form.appendChild(cbInput);
 
-    // Also include callbackUrl explicitly
-    const cbInput = document.createElement("input");
-    cbInput.type = "hidden";
-    cbInput.name = "callbackUrl";
-    cbInput.value = callbackUrl;
-    form.appendChild(cbInput);
+  document.body.appendChild(form);
 
-    // Append form
-    document.body.appendChild(form);
+  // Open popup
+  const popup = window.open(
+    "",
+    "GoogleLoginPopup",
+    `width=${width},height=${height},top=${top},left=${left},popup=yes`
+  );
 
-    // 4. Open popup
-    const popup = window.open(
-      "",
-      "GoogleLoginPopup",
-      `width=${width},height=${height},top=${top},left=${left},popup=yes`
-    );
-
-    if (!popup) {
-      alert("Popup blocked");
-      return;
-    }
-
-    // 5. Submit the form into the popup
-    form.submit();
-    document.body.removeChild(form);
-
-    // 6. Wait for auth success
-    window.addEventListener("message", function onMessage(event) {
-      if (event.origin !== window.location.origin) return;
-      if (event.data === "auth-success") {
-        window.removeEventListener("message", onMessage);
-
-        // ✅ Redirect user to their original target
-        window.location.href = redirectAfterLogin;
-      }
-    });
-  } catch (err) {
-    console.error("Google login failed:", err);
-    alert("Login failed");
+  if (!popup) {
+    alert("Popup blocked. Please allow popups for this site.");
+    return;
   }
+
+  // Submit into popup
+  form.submit();
+  document.body.removeChild(form);
+
+  // Listen for message from popup-close.vue
+  window.addEventListener("message", function onMessage(event) {
+    if (event.origin !== window.location.origin) return;
+    if (event.data === "auth-success") {
+      window.removeEventListener("message", onMessage);
+      window.location.href = redirectAfterLogin; // ✅ redirect main app
+    }
+  });
 };
 </script>
