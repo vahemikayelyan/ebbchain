@@ -1,5 +1,1 @@
-<template>
-  <div>
-    <HowItWorks />
-  </div>
-</template>
+<template><HowItWorks /></template>

@@ -224,24 +224,24 @@ const handleSignIn = async () => {
   try {
     isLoading.value = true;
 
-    // ⏳ Optional: demo delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // ✅ Use Nuxt Auth signIn helper
     const result = await signIn("credentials", {
       email: email.value,
       password: password.value,
-      redirect: true,
+      redirect: false, // 👈 prevents unwanted redirect on failure
     });
 
     if (result?.error) {
       errors.api = "Invalid email or password.";
-      isLoading.value = false;
-      return;
+      return; // stay on login
     }
+
+    // ✅ Login successful
+    await navigateTo("/dashboard");
   } catch (err) {
+    console.error("Login error:", err);
     errors.api = "Something went wrong. Please try again.";
-    isLoading.value = false;
+  } finally {
+    isLoading.value = false; // 👈 always reset spinner
   }
 };
 </script>
