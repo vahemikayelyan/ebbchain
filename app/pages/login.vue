@@ -104,7 +104,7 @@
           </div>
 
           <!-- API error -->
-          <p v-if="errors.api" class="text-xs text-red-600 mt-1">
+          <p v-if="errors.api" class="text-xs text-red-600">
             {{ errors.api }}
           </p>
 

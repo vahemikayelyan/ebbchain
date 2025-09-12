@@ -1,6 +1,4 @@
 <template>
-  <header>
-    <TopBar />
-    <NavBar />
-  </header>
+  <TopBar />
+  <NavBar />
 </template>
